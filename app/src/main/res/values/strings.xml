@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Anvil</string>
+
+    <string name="mute_unmute">Mute/Unmute Volume</string>
+    <string name="volume">Volume</string>
+    <string name="brightness">Brightness</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <string name="enter_a_number_here">Enter a number here</string>
+    <string name="rule_type">Rule type</string>
+    <string name="volume_rule_type">Volume Rule type</string>
+    <string name="when_should_the_rule_take_effect">When should the rule take effect</string>
+    <string name="app_icon">App Icon</string>
+    <string name="add">Add</string>
+    <string name="select_an_application">Select an Application</string>
+    <string name="search">Search</string>
+    <string name="add_a_rule">Add a Rule</string>
+    <string name="current_app_changed">Current app changed: %1$s</string>
+    <string name="mute">Mute</string>
+    <string name="unmute">Unmute</string>
+    <string name="volume_percentage">Volume percentage</string>
+    <string name="brightness_percentage">Brightness percentage</string>
+    <string name="delete_button_description">Delete</string>
+    <string name="rule_condition">Rule condition</string>
+    <string name="readme">Readme</string>
+    <string name="location_warning">This app requires location permissions to be enabled at all times in the location settings menu to allow the geofencing features to work.</string>
+    <string name="location_warning2">Geofences also requires improved location accuracy to be enabled.</string>
+    <string name="accessibility_service_warning">Additionally it needs you to enable the Anvil Accessibility Service in the Accessibility settings menu for the rules to function, without it nothing will happen.</string>
+    <string name="choose_a_rule_type">Choose a rule type</string>
+
+
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="configure_location_rule">Configure location rule</string>
+    <string name="location_name">Location name</string>
+
+    <string name="enter">Enter Location</string>
+    <string name="leave">Leave Location</string>
+
+    <string name="location_readme1">Tap to select a location</string>
+    <string name="location_readme2">Tap again to determine the size of the geofence around that location</string>
+    <string name="location_readme3">Tap inside the circle to confirm your selection</string>
+    <string name="location_readme4">Tap and hold to reset the selection</string>
+
+
+    <string-array name="rule_conditions">
+        <item>Open</item>
+        <item>Close</item>
+    </string-array>
+
+    <string-array name="location_conditions">
+        <item>Enter Location</item>
+        <item>Leave Location</item>
+    </string-array>
+
+    <string-array name="rule_types">
+        <item>Mute/Unmute Volume</item>
+        <item>Volume</item>
+    </string-array>
+
+    <string-array name="mute_unmute">
+        <item>Mute</item>
+        <item>Unmute</item>
+    </string-array>
+</resources>
