@@ -108,7 +108,7 @@ fun ConfigureLocationRuleScaffold(navController: NavHostController, viewModel: A
                             latitude = rule.latitude
                             longitude = rule.longitude
                         },
-                        radiusInMeters = rule.radius,
+                        radius = rule.radius,
                         transitionType = GEOFENCE_TRANSITION_ENTER
                     )
                     if (geofenceManager.geofenceList.isNotEmpty()) {
@@ -129,7 +129,7 @@ fun ConfigureLocationRuleScaffold(navController: NavHostController, viewModel: A
                             latitude = rule.latitude
                             longitude = rule.longitude
                         },
-                        radiusInMeters = rule.radius,
+                        radius = rule.radius,
                         transitionType = GEOFENCE_TRANSITION_EXIT
                     )
                     if (geofenceManager.geofenceList.isNotEmpty()) {

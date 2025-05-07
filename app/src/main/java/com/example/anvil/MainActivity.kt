@@ -22,15 +22,12 @@ import androidx.compose.material3.MenuAnchorType.Companion.PrimaryNotEditable
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -41,7 +38,6 @@ import com.example.anvil.data.LocationRule
 import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.geofence.GeofenceBroadcastReceiver
 import com.example.anvil.data.geofence.GeofenceManager
-import com.example.anvil.data.geofence.GeofencingScreen
 import com.example.anvil.ui.AnvilViewModel
 import com.example.anvil.ui.pages.AddRuleScaffold
 import com.example.anvil.ui.pages.ConfigureLocationRuleScaffold
@@ -53,14 +49,11 @@ import com.example.anvil.ui.pages.SelectLocationScaffold
 import com.example.anvil.ui.pages.SelectRuleScaffold
 import com.example.anvil.ui.theme.AnvilTheme
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 
@@ -164,7 +157,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
                     latitude = geofence.latitude
                     longitude = geofence.longitude
                 },
-                radiusInMeters = geofence.radius,
+                radius = geofence.radius,
                 transitionType = GEOFENCE_TRANSITION_ENTER
             )
             if (geofenceManager.geofenceList.isNotEmpty()) {
@@ -185,7 +178,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
                     latitude = geofence.latitude
                     longitude = geofence.longitude
                 },
-                radiusInMeters = geofence.radius,
+                radius = geofence.radius,
                 transitionType = GEOFENCE_TRANSITION_EXIT
             )
             if (geofenceManager.geofenceList.isNotEmpty()) {
@@ -201,13 +194,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
     }
 
 
-    DisposableEffect(LocalLifecycleOwner.current) {
-        onDispose {
-            scope.launch(Dispatchers.IO) {
-                geofenceManager.deregisterGeofence()
-            }
-        }
-    }
+
 
     // Register a local broadcast to receive activity transition updates
     GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->

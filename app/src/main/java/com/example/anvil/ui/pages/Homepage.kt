@@ -396,7 +396,7 @@ fun LocationSelectionCard(
                                         .padding(vertical = 6.dp, horizontal = 10.dp)
                                 ) {
                                     val ruleConditions =
-                                        stringArrayResource(R.array.rule_conditions)
+                                        stringArrayResource(R.array.location_conditions)
 
                                     BasicText(
                                         text = ruleConditions[locationRule.ruleCondition],
@@ -722,7 +722,7 @@ fun LocationSelectionCard(
                                                         geofenceManager.deregisterGeofence()
                                                     }
                                                     geofenceManager.removeGeofence(rule.locationName)
-                                                    geofenceManager.registerGeofence()
+                                                    //geofenceManager.registerGeofence()
                                                     viewModel.deleteLocationRule(locationRule)
                                                     check = false
                                                     confirm = false

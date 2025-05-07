@@ -3,6 +3,7 @@ package com.example.anvil.data.geofence
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
 import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
@@ -20,7 +21,10 @@ import com.google.android.gms.location.GeofencingEvent
 // used code from https://github.com/android/platform-samples/tree/main/samples/location/src/main/java/com/example/platform/location/geofencing referenced in making the geofencing support
 
 @Composable
-fun GeofenceBroadcastReceiver(systemAction: String, systemEvent: (userActivity: String) -> Unit) {
+fun GeofenceBroadcastReceiver(
+    systemAction: String,
+    systemEvent: (userActivity: String) -> Unit,
+) {
     val TAG = "GeofenceReceiver"
     val context = LocalContext.current
     val currentSystemOnEvent by rememberUpdatedState(systemEvent)
@@ -40,11 +44,14 @@ fun GeofenceBroadcastReceiver(systemAction: String, systemEvent: (userActivity: 
                 val alertString = "Geofence Alert :" +
                         " Trigger ${geofencingEvent.triggeringGeofences}" +
                         " Transition ${geofencingEvent.geofenceTransition}"
-                Log.d(TAG, alertString)
+                Log.d(
+                    TAG,
+                    alertString
+                )
                 currentSystemOnEvent(alertString)
             }
         }
-        context.registerReceiver(broadcast, intentFilter, RECEIVER_NOT_EXPORTED)
+        context.registerReceiver(broadcast, intentFilter, RECEIVER_EXPORTED)
         onDispose {
             context.unregisterReceiver(broadcast)
         }

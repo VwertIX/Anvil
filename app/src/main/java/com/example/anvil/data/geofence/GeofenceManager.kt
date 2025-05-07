@@ -14,15 +14,16 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.tasks.await
 
-
 // code from https://github.com/android/platform-samples/tree/main/samples/location/src/main/java/com/example/platform/location/geofencing referenced in making the geofencing support
 // and https://developer.android.com/develop/sensors-and-location/location/geofencing
+
 class GeofenceManager(context: Context) {
 
     private val CUSTOM_INTENT_GEOFENCE = "GEOFENCE-TRANSITION-INTENT-ACTION"
     private val CUSTOM_REQUEST_CODE_GEOFENCE = 1001
 
 
+    private val TAG = "GeofenceManager"
     private val client = LocationServices.getGeofencingClient(context)
     val geofenceList = mutableMapOf<String, Geofence>()
 
@@ -31,17 +32,18 @@ class GeofenceManager(context: Context) {
             context,
             CUSTOM_REQUEST_CODE_GEOFENCE,
             Intent(CUSTOM_INTENT_GEOFENCE),
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
         )
     }
 
     fun addGeofence(
         id: String,
         location: Location,
-        radiusInMeters: Float = 100.0f,
+        radius: Float = 100.0f,
+        expirationTime: Long = 30 * 60 * 1000,
         transitionType: Int = GEOFENCE_TRANSITION_ENTER or GEOFENCE_TRANSITION_EXIT
     ) {
-        geofenceList[id] = createGeofence(id, location, radiusInMeters, transitionType)
+        geofenceList[id] = createGeofence(id, location, radius, expirationTime)
     }
 
     fun removeGeofence(key: String) {
@@ -52,16 +54,15 @@ class GeofenceManager(context: Context) {
     fun registerGeofence() {
         client.addGeofences(createGeofencingRequest(), geofencingPendingIntent)
             .addOnSuccessListener {
-                Log.d("GeofenceManager", "registerGeofence: SUCCESS")
+                Log.d(TAG, "registerGeofence: SUCCESS")
             }.addOnFailureListener { exception ->
-                Log.d("GeofenceManager", "registerGeofence: Failure\n$exception")
+                Log.d(TAG, "registerGeofence: Failure\n$exception")
             }
     }
 
     suspend fun deregisterGeofence() = kotlin.runCatching {
         client.removeGeofences(geofencingPendingIntent).await()
         geofenceList.clear()
-        Log.d("GeofenceManager", "DeregisterGeofence: SUCCESS")
     }
 
     private fun createGeofencingRequest(): GeofencingRequest {
@@ -75,12 +76,13 @@ class GeofenceManager(context: Context) {
         key: String,
         location: Location,
         radiusInMeters: Float,
-        transitionType: Int
+        expirationTimeInMillis: Long,
     ): Geofence {
         return Geofence.Builder()
             .setRequestId(key)
             .setCircularRegion(location.latitude, location.longitude, radiusInMeters)
-            .setTransitionTypes(transitionType)
+            .setExpirationDuration(expirationTimeInMillis)
+            .setTransitionTypes(GEOFENCE_TRANSITION_ENTER or GEOFENCE_TRANSITION_EXIT)
             .build()
     }
 
