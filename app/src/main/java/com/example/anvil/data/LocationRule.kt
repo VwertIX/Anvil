@@ -1,7 +1,6 @@
 package com.example.anvil.data
 
 
-import android.location.Location
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

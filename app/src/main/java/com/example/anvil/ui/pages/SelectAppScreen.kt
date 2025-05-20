@@ -2,7 +2,6 @@ package com.example.anvil.ui.pages
 
 import android.content.pm.PackageInfo
 import android.graphics.drawable.Drawable
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +40,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.stringResource
@@ -52,8 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.example.anvil.R
 import com.example.anvil.AddRuleScreen
+import com.example.anvil.R
 import com.example.anvil.data.AppInfo
 import com.example.anvil.ui.AnvilViewModel
 import com.example.anvil.ui.theme.primaryLight

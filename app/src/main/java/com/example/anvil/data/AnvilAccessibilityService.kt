@@ -1,7 +1,6 @@
 package com.example.anvil.data
 
 import android.accessibilityservice.AccessibilityService
-import android.content.Context
 import android.media.AudioManager
 import android.media.AudioManager.ADJUST_MUTE
 import android.media.AudioManager.ADJUST_UNMUTE

@@ -47,7 +47,6 @@ import com.example.anvil.ui.pages.ReadmeScaffold
 import com.example.anvil.ui.pages.SelectAppScaffold
 import com.example.anvil.ui.pages.SelectLocationScaffold
 import com.example.anvil.ui.pages.SelectRuleScaffold
-import com.example.anvil.ui.theme.AnvilTheme
 import com.example.anvil.ui.theme.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER

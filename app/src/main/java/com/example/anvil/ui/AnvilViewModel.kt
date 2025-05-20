@@ -5,33 +5,30 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anvil.R
 import com.example.anvil.data.AppRule
-import com.example.anvil.data.RuleCondition
-import com.example.anvil.data.RuleType
 import com.example.anvil.data.AppRuleList
-import com.example.anvil.data.rulesRepository
 import com.example.anvil.data.LocationRule
 import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.LocationRuleList
+import com.example.anvil.data.RuleCondition
+import com.example.anvil.data.RuleType
+import com.example.anvil.data.rulesRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
-
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-
 
 
 @HiltViewModel
