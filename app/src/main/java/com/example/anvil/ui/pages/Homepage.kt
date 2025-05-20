@@ -2,7 +2,6 @@ package com.example.anvil.ui.pages
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.location.Location
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -69,9 +68,7 @@ import com.example.anvil.ui.theme.RedWarning
 import kotlin.math.roundToInt
 import android.media.AudioManager
 import android.util.Log
-import android.widget.Toast
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicText
@@ -80,18 +77,15 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
 import com.example.anvil.ReadmeScreen
 import com.example.anvil.RuleChoiceScreen
 import com.example.anvil.data.LocationRule
-import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.geofence.GeofenceManager
-import com.example.anvil.data.geofence.MapScreen
 import com.example.anvil.ui.theme.titleMaxDimen
-import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER
-import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -105,7 +99,7 @@ fun HomepageScaffold(
     geofenceManager: GeofenceManager
 ) {
     val appRuleList by viewModel.getAllAppRules.collectAsStateWithLifecycle()
-    val locationRuleList by viewModel.getAllLocationRules.collectAsStateWithLifecycle()
+    val locationRuleList by viewModel.allLocationRules.collectAsStateWithLifecycle()
 
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -171,12 +165,16 @@ fun HomepageScaffold(
                                 when (confirm) {
                                     false -> {}
                                     true -> {
+                                        val scope = rememberCoroutineScope()
                                         AlertDialogExample(
                                             onDismissRequest = {
                                                 check = false
                                                 confirm = false
                                             },
                                             onConfirmation = {
+                                                scope.launch(Dispatchers.IO) {
+                                                    geofenceManager.deregisterGeofence()
+                                                }
                                                 viewModel.clearRules()
                                                 check = false
                                                 confirm = false
@@ -206,6 +204,7 @@ fun HomepageScaffold(
         },
         floatingActionButton = {
             FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.surfaceDim,
                 onClick = {
                     navController.navigate(RuleChoiceScreen)
                 }
@@ -243,6 +242,8 @@ fun HomepageScaffold(
                 }
 
             }
+
+
             items(locationRuleList.locationRules) { rule ->
 
                 LocationSelectionCard(rule, navController, viewModel, context, geofenceManager)

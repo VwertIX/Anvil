@@ -93,10 +93,14 @@ fun AddRuleScaffold(navController: NavHostController, viewModel: AnvilViewModel,
         },
         floatingActionButton = {
             val rule by viewModel.appRule.collectAsStateWithLifecycle()
-            FloatingActionButton(onClick = {
-                viewModel.saveAppRule(rule)
-                navController.popBackStack(route = HomeScreen, inclusive = false)
-            }) {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.surfaceDim,
+                onClick = {
+                    viewModel.saveAppRule(rule)
+                    navController.popBackStack(route = HomeScreen, inclusive = false)
+                }
+            )
+            {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
             }
         }

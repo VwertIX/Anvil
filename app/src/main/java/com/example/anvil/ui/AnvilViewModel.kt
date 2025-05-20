@@ -3,7 +3,6 @@ package com.example.anvil.ui
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
@@ -13,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
-import com.example.anvil.HomeScreen
 import com.example.anvil.R
 import com.example.anvil.data.AppRule
 import com.example.anvil.data.RuleCondition
@@ -23,10 +21,7 @@ import com.example.anvil.data.rulesRepository
 import com.example.anvil.data.LocationRule
 import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.LocationRuleList
-import com.google.android.gms.location.CurrentLocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -177,7 +172,7 @@ class AnvilViewModel @Inject constructor(private val ruleRepository: rulesReposi
     val locationRule: StateFlow<LocationRule> = _locationRule
 
 
-    val getAllLocationRules: StateFlow<LocationRuleList> =
+    val allLocationRules: StateFlow<LocationRuleList> =
         ruleRepository.getAllLocationRulesStream()
             .map { LocationRuleList(it) }
             .stateIn(

@@ -133,8 +133,8 @@ object ReadmeScreen
 @Serializable
 object ReadmeLocationScreen
 
-private val CUSTOM_INTENT_GEOFENCE = "GEOFENCE-TRANSITION-INTENT-ACTION"
-private val CUSTOM_REQUEST_CODE_GEOFENCE = 1001
+private const val CUSTOM_INTENT_GEOFENCE = "GEOFENCE-TRANSITION-INTENT-ACTION"
+private const val CUSTOM_REQUEST_CODE_GEOFENCE = 1001
 
 
 // Use the 'viewModel()' function from the lifecycle-viewmodel-compose artifact
@@ -143,7 +143,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
     val packageList = AppInfo(viewModel, context)
     val navController = rememberNavController()
     val geofenceManager by remember { mutableStateOf(GeofenceManager(context)) }
-    val geoFenceList by viewModel.getAllLocationRules.collectAsStateWithLifecycle()
+    val geoFenceList by viewModel.allLocationRules.collectAsStateWithLifecycle()
     var geofenceTransitionEventInfo by remember {mutableStateOf("")}
     val scope = rememberCoroutineScope()
 

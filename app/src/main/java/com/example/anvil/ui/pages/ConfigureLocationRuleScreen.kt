@@ -98,56 +98,59 @@ fun ConfigureLocationRuleScaffold(navController: NavHostController, viewModel: A
         },
         floatingActionButton = {
             val rule by viewModel.locationRule.collectAsStateWithLifecycle()
-            FloatingActionButton(onClick = {
-                viewModel.saveLocationRule(rule)
-                if (rule.ruleCondition == LocationRuleCondition.Enter.ordinal) {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.surfaceDim,
+                onClick = {
+                    viewModel.saveLocationRule(rule)
+                    if (rule.ruleCondition == LocationRuleCondition.Enter.ordinal) {
 
-                    geofenceManager.addGeofence(
-                        id = rule.locationName,
-                        location = Location("").apply {
-                            latitude = rule.latitude
-                            longitude = rule.longitude
-                        },
-                        radius = rule.radius,
-                        transitionType = GEOFENCE_TRANSITION_ENTER
-                    )
-                    if (geofenceManager.geofenceList.isNotEmpty()) {
-                        geofenceManager.registerGeofence()
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Please add at least one geofence to monitor",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        geofenceManager.addGeofence(
+                            id = rule.locationName,
+                            location = Location("").apply {
+                                latitude = rule.latitude
+                                longitude = rule.longitude
+                            },
+                            radius = rule.radius,
+                            transitionType = GEOFENCE_TRANSITION_ENTER
+                        )
+                        if (geofenceManager.geofenceList.isNotEmpty()) {
+                            geofenceManager.registerGeofence()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Please add at least one geofence to monitor",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                        Log.d("Geofence", "Geofence added")
+                    } else if (rule.ruleCondition == LocationRuleCondition.Leave.ordinal) {
+
+                        geofenceManager.addGeofence(
+                            id = rule.locationName,
+                            location = Location("").apply {
+                                latitude = rule.latitude
+                                longitude = rule.longitude
+                            },
+                            radius = rule.radius,
+                            transitionType = GEOFENCE_TRANSITION_EXIT
+                        )
+                        if (geofenceManager.geofenceList.isNotEmpty()) {
+                            geofenceManager.registerGeofence()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Please add at least one geofence to monitor",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                        Log.d("Geofence", "Geofence added")
+
+
                     }
-                    Log.d("Geofence", "Geofence added")
-                } else if (rule.ruleCondition == LocationRuleCondition.Leave.ordinal) {
 
-                    geofenceManager.addGeofence(
-                        id = rule.locationName,
-                        location = Location("").apply {
-                            latitude = rule.latitude
-                            longitude = rule.longitude
-                        },
-                        radius = rule.radius,
-                        transitionType = GEOFENCE_TRANSITION_EXIT
-                    )
-                    if (geofenceManager.geofenceList.isNotEmpty()) {
-                        geofenceManager.registerGeofence()
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Please add at least one geofence to monitor",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                    Log.d("Geofence", "Geofence added")
-
-
+                    navController.popBackStack(route = HomeScreen, inclusive = false)
                 }
-
-                navController.popBackStack(route = HomeScreen, inclusive = false)
-            }) {
+            ) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
             }
         }
