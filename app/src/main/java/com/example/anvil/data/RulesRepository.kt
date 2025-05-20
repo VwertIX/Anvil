@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Repository that provides insert, update, delete, and retrieve of [AppRule] from a given data source.
  */
-interface rulesRepository {
+interface RulesRepository {
 
     fun getAllAppRulesStream(): Flow<List<AppRule>>
 

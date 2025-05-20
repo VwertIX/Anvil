@@ -26,7 +26,7 @@ import javax.inject.Inject
 class AnvilAccessibilityService : AccessibilityService() {
 
     @Inject
-    lateinit var ruleRepository: rulesRepository
+    lateinit var ruleRepository: RulesRepository
 
 
     companion object {

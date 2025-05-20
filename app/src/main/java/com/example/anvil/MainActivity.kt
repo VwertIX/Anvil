@@ -145,7 +145,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
     val geofenceManager by remember { mutableStateOf(GeofenceManager(context)) }
     val geoFenceList by viewModel.allLocationRules.collectAsStateWithLifecycle()
     var geofenceTransitionEventInfo by remember {mutableStateOf("")}
-    val scope = rememberCoroutineScope()
+    rememberCoroutineScope()
 
 
     for (geofence: LocationRule in geoFenceList.locationRules) {

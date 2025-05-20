@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class rulesRepositoryImp @Inject constructor(private val ruleDao: RulesDao) : rulesRepository {
+class RulesRepositoryImp @Inject constructor(private val ruleDao: RulesDao) : RulesRepository {
     override fun getAllAppRulesStream(): Flow<List<AppRule>> = ruleDao.getAllAppRules()
 
     override fun getAppRuleByIdStream(id: Int): Flow<AppRule?> = ruleDao.getAppRuleById(id)

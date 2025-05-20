@@ -11,7 +11,7 @@ abstract class RepositoryModule {
 
 
     @Binds
-    abstract fun bindAppRuleRepository(impl: rulesRepositoryImp) : rulesRepository
+    abstract fun bindAppRuleRepository(impl: RulesRepositoryImp) : RulesRepository
 
 
 

@@ -18,7 +18,7 @@ import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.LocationRuleList
 import com.example.anvil.data.RuleCondition
 import com.example.anvil.data.RuleType
-import com.example.anvil.data.rulesRepository
+import com.example.anvil.data.RulesRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class AnvilViewModel @Inject constructor(private val ruleRepository: rulesRepository) : ViewModel() {
+class AnvilViewModel @Inject constructor(private val ruleRepository: RulesRepository) : ViewModel() {
     companion object {
         private const val MILLIS = 5_000L
     }

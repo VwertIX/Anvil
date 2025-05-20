@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/red_anvil_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Anvil"
-        tools:targetApi="31">
+        >
 
         <!--
              TODO: Before you run your application, you need a Google Maps API key.

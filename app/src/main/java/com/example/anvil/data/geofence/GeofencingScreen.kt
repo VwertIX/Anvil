@@ -31,8 +31,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-private val CUSTOM_INTENT_GEOFENCE = "GEOFENCE-TRANSITION-INTENT-ACTION"
-private val CUSTOM_REQUEST_CODE_GEOFENCE = 1001
+private const val CUSTOM_INTENT_GEOFENCE = "GEOFENCE-TRANSITION-INTENT-ACTION"
+private const val CUSTOM_REQUEST_CODE_GEOFENCE = 1001
 
 
 // code from https://github.com/android/platform-samples/tree/main/samples/location/src/main/java/com/example/platform/location/geofencing referenced in making the geofencing support
@@ -186,7 +186,7 @@ fun GeofenceList(geofenceManager: GeofenceManager) {
 @SuppressLint("InlinedApi")
 @Composable
 fun GeofencingScreen2() {
-    val permissions = listOf(
+    listOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
     )
