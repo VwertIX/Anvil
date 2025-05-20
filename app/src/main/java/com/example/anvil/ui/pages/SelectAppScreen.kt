@@ -56,6 +56,7 @@ import com.example.anvil.R
 import com.example.anvil.AddRuleScreen
 import com.example.anvil.data.AppInfo
 import com.example.anvil.ui.AnvilViewModel
+import com.example.anvil.ui.theme.primaryLight
 import com.example.anvil.ui.theme.titleMaxDimen
 import kotlin.math.roundToInt
 
@@ -68,8 +69,8 @@ fun SelectAppScaffold(navController: NavHostController, viewModel: AnvilViewMode
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
                     Row(
@@ -174,10 +175,8 @@ fun AppSelectionCard(packageInfo: PackageInfo, packageList: AppInfo, navControll
 
 
     OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
-        border = BorderStroke(4.dp, Color.Black),
+        colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+        border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
         modifier = Modifier
             .padding(vertical = 6.dp, horizontal = 6.dp),
         onClick = {

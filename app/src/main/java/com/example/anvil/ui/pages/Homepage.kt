@@ -77,7 +77,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
@@ -85,6 +84,7 @@ import com.example.anvil.ReadmeScreen
 import com.example.anvil.RuleChoiceScreen
 import com.example.anvil.data.LocationRule
 import com.example.anvil.data.geofence.GeofenceManager
+import com.example.anvil.ui.theme.primaryLight
 import com.example.anvil.ui.theme.titleMaxDimen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -107,7 +107,7 @@ fun HomepageScaffold(
             TopAppBar(
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
                     Row {
@@ -166,7 +166,7 @@ fun HomepageScaffold(
                                     false -> {}
                                     true -> {
                                         val scope = rememberCoroutineScope()
-                                        AlertDialogExample(
+                                        AlertDialogCustom(
                                             onDismissRequest = {
                                                 check = false
                                                 confirm = false
@@ -205,6 +205,7 @@ fun HomepageScaffold(
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
+                contentColor = primaryLight,
                 onClick = {
                     navController.navigate(RuleChoiceScreen)
                 }
@@ -217,7 +218,7 @@ fun HomepageScaffold(
         LazyColumn(contentPadding = innerPadding) {
             item {
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier
                         .padding(vertical = 6.dp, horizontal = 10.dp)
                 ) {
@@ -250,7 +251,7 @@ fun HomepageScaffold(
             }
             item {
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier
                         .padding(vertical = 6.dp, horizontal = 10.dp)
                 ) {
@@ -303,10 +304,8 @@ fun LocationSelectionCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedCard(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-            ),
-            border = BorderStroke(4.dp, MaterialTheme.colorScheme.inversePrimary),
+            colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+            border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier
                 .padding(vertical = 6.dp, horizontal = 6.dp)
                 .fillMaxWidth(),
@@ -712,7 +711,7 @@ fun LocationSelectionCard(
                                         true -> {
                                             val rule by viewModel.locationRule.collectAsStateWithLifecycle()
                                             val scope = rememberCoroutineScope()
-                                            AlertDialogExample(
+                                            AlertDialogCustom(
                                                 onDismissRequest = {
                                                     check = false
                                                     confirm = false
@@ -760,10 +759,8 @@ fun AppSelectionCard(
     var showDetails by remember { mutableStateOf(false) }
 
     OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
-        border = BorderStroke(4.dp, MaterialTheme.colorScheme.inversePrimary),
+        colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+        border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp, horizontal = 6.dp),
@@ -1157,7 +1154,7 @@ fun AppSelectionCard(
                                 when (confirm) {
                                     false -> {}
                                     true -> {
-                                        AlertDialogExample(
+                                        AlertDialogCustom(
                                             onDismissRequest = {
                                                 check = false
                                                 confirm = false
@@ -1186,7 +1183,7 @@ fun AppSelectionCard(
 
 
 @Composable
-fun AlertDialogExample(
+fun AlertDialogCustom(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     dialogTitle: String,
@@ -1207,22 +1204,28 @@ fun AlertDialogExample(
             onDismissRequest()
         },
         confirmButton = {
+
             TextButton(
                 onClick = {
                     onConfirmation()
                 }
             ) {
-                Text("Confirm")
+                Text("Confirm", color = primaryLight)
             }
         },
         dismissButton = {
+
             TextButton(
+
                 onClick = {
                     onDismissRequest()
                 }
             ) {
-                Text("Dismiss")
+                Text("Dismiss", color = primaryLight)
             }
+            Spacer(modifier = Modifier.fillMaxWidth(0.38f))
+
+
         }
     )
 }

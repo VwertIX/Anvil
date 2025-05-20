@@ -40,6 +40,7 @@ import com.example.anvil.data.geofence.GeofenceManager
 import com.example.anvil.data.geofence.MapScreen
 import com.example.anvil.ui.AnvilViewModel
 import com.example.anvil.ui.theme.RedWarning
+import com.example.anvil.ui.theme.primaryLight
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.GeofencingClient
 
@@ -53,7 +54,7 @@ fun SelectLocationScaffold(context: Context, navController: NavHostController, v
             TopAppBar(
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
 

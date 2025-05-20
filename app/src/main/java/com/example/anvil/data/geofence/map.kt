@@ -110,8 +110,9 @@ fun MapScreen(navController: NavHostController, viewModel: AnvilViewModel, fused
                     )
 
 
-                }
-
+                },
+                onClick = { true },
+                flat = true,
             )
 
 

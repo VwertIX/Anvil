@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.anvil.HomeScreen
 import com.example.anvil.R
 import com.example.anvil.data.geofence.GeofenceManager
+import com.example.anvil.ui.theme.primaryLight
 import com.example.anvil.ui.theme.readmeSize
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +44,7 @@ fun ReadmeScaffold(geofenceManager: GeofenceManager) {
             TopAppBar(
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
                     Row {

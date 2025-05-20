@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.result.ActivityResultLauncher
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -39,6 +41,7 @@ import com.example.anvil.R
 import com.example.anvil.SelectAppScreen
 import com.example.anvil.SelectLocationScreen
 import com.example.anvil.ui.AnvilViewModel
+import com.example.anvil.ui.theme.primaryLight
 import com.example.anvil.ui.theme.titleMaxDimen
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -52,7 +55,7 @@ fun SelectRuleScaffold(context: Context, navController: NavHostController, viewM
             TopAppBar(
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
                         Text(stringResource(R.string.choose_a_rule_type), fontSize = 30.sp)
@@ -81,8 +84,9 @@ fun SelectRuleScaffold(context: Context, navController: NavHostController, viewM
             item {
 
 
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                OutlinedCard(
+                    colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+                    border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier
                         .height(250.dp)
                         .padding(vertical = 6.dp, horizontal = 10.dp),
@@ -126,8 +130,9 @@ fun SelectRuleScaffold(context: Context, navController: NavHostController, viewM
                 }
             }
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                OutlinedCard(
+                    colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+                    border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier
                         .height(250.dp)
                         .padding(vertical = 6.dp, horizontal = 10.dp),

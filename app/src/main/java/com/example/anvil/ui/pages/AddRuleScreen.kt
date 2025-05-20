@@ -59,6 +59,7 @@ import com.example.anvil.R
 import com.example.anvil.data.AppInfo
 import com.example.anvil.data.RuleType
 import com.example.anvil.ui.AnvilViewModel
+import com.example.anvil.ui.theme.primaryLight
 import com.example.anvil.ui.theme.titleMaxDimen
 import kotlin.math.roundToInt
 
@@ -72,7 +73,7 @@ fun AddRuleScaffold(navController: NavHostController, viewModel: AnvilViewModel,
             TopAppBar(
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
                     Row {
@@ -95,6 +96,7 @@ fun AddRuleScaffold(navController: NavHostController, viewModel: AnvilViewModel,
             val rule by viewModel.appRule.collectAsStateWithLifecycle()
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
+                contentColor = primaryLight,
                 onClick = {
                     viewModel.saveAppRule(rule)
                     navController.popBackStack(route = HomeScreen, inclusive = false)
@@ -122,10 +124,8 @@ fun AddRuleCard(packageList: AppInfo, innerPadding: PaddingValues = PaddingValue
     var number by remember { mutableIntStateOf(0) }
 
     OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
-        border = BorderStroke(4.dp, Color.Black),
+        colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+        border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
         modifier = Modifier
             .fillMaxWidth()
             .padding(innerPadding)

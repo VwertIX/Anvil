@@ -48,6 +48,7 @@ import com.example.anvil.ui.pages.SelectAppScaffold
 import com.example.anvil.ui.pages.SelectLocationScaffold
 import com.example.anvil.ui.pages.SelectRuleScaffold
 import com.example.anvil.ui.theme.AnvilTheme
+import com.example.anvil.ui.theme.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
@@ -102,7 +103,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            AnvilTheme(darkTheme = true) {
+            AppTheme(darkTheme = true) {
                 AnvilNav(context, locationPermissionRequest, fusedLocationClient, geofencingClient)
             }
         }

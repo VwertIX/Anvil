@@ -64,6 +64,7 @@ import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.RuleType
 import com.example.anvil.data.geofence.GeofenceManager
 import com.example.anvil.ui.AnvilViewModel
+import com.example.anvil.ui.theme.primaryLight
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
 import kotlin.math.roundToInt
@@ -77,7 +78,7 @@ fun ConfigureLocationRuleScaffold(navController: NavHostController, viewModel: A
             TopAppBar(
                 colors = topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = primaryLight,
                 ),
                 title = {
                     Row {
@@ -100,6 +101,7 @@ fun ConfigureLocationRuleScaffold(navController: NavHostController, viewModel: A
             val rule by viewModel.locationRule.collectAsStateWithLifecycle()
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
+                contentColor = primaryLight,
                 onClick = {
                     viewModel.saveLocationRule(rule)
                     if (rule.ruleCondition == LocationRuleCondition.Enter.ordinal) {
@@ -170,10 +172,8 @@ fun ConfigureLocationRuleCard(innerPadding: PaddingValues = PaddingValues(8.dp),
     var number by remember { mutableIntStateOf(0) }
 
     OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
-        border = BorderStroke(4.dp, Color.Black),
+        colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
+        border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
         modifier = Modifier
             .fillMaxWidth()
             .padding(innerPadding)
