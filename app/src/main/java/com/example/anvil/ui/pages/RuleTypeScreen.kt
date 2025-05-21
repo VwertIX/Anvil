@@ -48,7 +48,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectRuleScaffold(context: Context, navController: NavHostController, viewModel: AnvilViewModel, locationPermissionRequest: ActivityResultLauncher<Array<String>>, fusedLocationClient: FusedLocationProviderClient) {
+fun SelectRuleTypeScaffold(context: Context, navController: NavHostController, viewModel: AnvilViewModel, locationPermissionRequest: ActivityResultLauncher<Array<String>>, fusedLocationClient: FusedLocationProviderClient) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {

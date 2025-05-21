@@ -2,6 +2,7 @@ package com.example.anvil.ui.pages
 
 import android.content.Context
 import android.location.Location
+import android.media.AudioManager
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -61,6 +62,7 @@ import androidx.navigation.NavHostController
 import com.example.anvil.HomeScreen
 import com.example.anvil.R
 import com.example.anvil.data.LocationRuleCondition
+import com.example.anvil.data.LocationRuleType
 import com.example.anvil.data.RuleType
 import com.example.anvil.data.geofence.GeofenceManager
 import com.example.anvil.ui.AnvilViewModel
@@ -269,7 +271,7 @@ fun ConfigureLocationRuleCard(innerPadding: PaddingValues = PaddingValues(8.dp),
                                 }
                             }
                             when (rule.ruleType) {
-                                RuleType.MuteUnmute.ordinal -> {
+                                LocationRuleType.MuteUnmute.ordinal -> {
                                     Card(
                                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
                                         modifier = Modifier
@@ -295,7 +297,7 @@ fun ConfigureLocationRuleCard(innerPadding: PaddingValues = PaddingValues(8.dp),
                                         }
                                     }
                                 }
-                                RuleType.Volume.ordinal -> {
+                                LocationRuleType.Volume.ordinal -> {
                                     Card(
                                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
                                         modifier = Modifier
@@ -315,7 +317,26 @@ fun ConfigureLocationRuleCard(innerPadding: PaddingValues = PaddingValues(8.dp),
                                                 
                                             )
                                             Row {
-                                                var sliderPosition by remember { mutableFloatStateOf(0f) }
+                                                var sliderPosition by remember { mutableFloatStateOf(number.toFloat()) }
+
+                                                val audioManager =
+                                                    context.getSystemService(AudioManager::class.java)
+                                                //val audioManager = getSystemService(context, AudioManager) as AudioManager
+
+                                                val minVolume by remember {
+                                                    mutableIntStateOf(
+                                                        audioManager.getStreamMinVolume(
+                                                            AudioManager.STREAM_MUSIC
+                                                        )
+                                                    )
+                                                }
+                                                val maxVolume by remember {
+                                                    mutableIntStateOf(
+                                                        audioManager.getStreamMaxVolume(
+                                                            AudioManager.STREAM_MUSIC
+                                                        )
+                                                    )
+                                                }
                                                 Slider(
                                                     value = sliderPosition,
                                                     onValueChange = {
@@ -324,7 +345,7 @@ fun ConfigureLocationRuleCard(innerPadding: PaddingValues = PaddingValues(8.dp),
                                                         viewModel.updateLocationRuleValue(number)
                                                         viewModel.updateLocationRuleBool(null)
                                                     },
-                                                    valueRange = 0f..100f,
+                                                    valueRange = minVolume.toFloat()..maxVolume.toFloat(),
                                                     modifier = Modifier.padding(horizontal = 20.dp)
                                                 )
                                             }
@@ -358,7 +379,7 @@ fun ConfigureLocationRuleCard(innerPadding: PaddingValues = PaddingValues(8.dp),
 fun ExposedDropdownMenuLocationRule(options: Array<String>, viewModel: AnvilViewModel, context: Context, ordinal: Int) {
     var expanded by remember { mutableStateOf(false) }
     var choice by remember { mutableStateOf(options[ordinal]) }
-    viewModel.checkLocationRuleInput(options[ordinal], context)
+    //viewModel.checkLocationRuleInput(options[ordinal], context)
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },

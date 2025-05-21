@@ -296,7 +296,7 @@ fun LocationSelectionCard(
     context: Context,
     geofenceManager: GeofenceManager
 ) {
-
+    val max = 15.sp
     var showDetails by remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -390,6 +390,7 @@ fun LocationSelectionCard(
                                 .padding(bottom = 3.dp)
                         ) {
                             Row(horizontalArrangement = Arrangement.Center) {
+
                                 Card(
                                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
                                     modifier = Modifier
@@ -402,7 +403,7 @@ fun LocationSelectionCard(
                                         text = ruleConditions[locationRule.ruleCondition],
                                         autoSize = TextAutoSize.StepBased(
                                             minFontSize = 10.sp,
-                                            maxFontSize = 20.sp,
+                                            maxFontSize = max,
                                             stepSize = 0.25.sp
                                         ),
                                         modifier = Modifier
@@ -430,7 +431,7 @@ fun LocationSelectionCard(
                                                 text = stringResource(R.string.mute),
                                                 autoSize = TextAutoSize.StepBased(
                                                     minFontSize = 10.sp,
-                                                    maxFontSize = 20.sp,
+                                                    maxFontSize = max,
                                                     stepSize = 0.25.sp
                                                 ),
                                                 modifier = Modifier
@@ -451,7 +452,7 @@ fun LocationSelectionCard(
                                                 text = stringResource(R.string.unmute),
                                                 autoSize = TextAutoSize.StepBased(
                                                     minFontSize = 10.sp,
-                                                    maxFontSize = 20.sp,
+                                                    maxFontSize = max,
                                                     stepSize = 0.25.sp
                                                 ),
                                                 modifier = Modifier
@@ -474,7 +475,7 @@ fun LocationSelectionCard(
                                                             text = stringResource(R.string.volume) + ": " + locationRule.ruleValue.toString(),
                                                             autoSize = TextAutoSize.StepBased(
                                                                 minFontSize = 10.sp,
-                                                                maxFontSize = 20.sp,
+                                                                maxFontSize = max,
                                                                 stepSize = 0.25.sp
                                                             ),
                                                             modifier = Modifier
@@ -755,7 +756,8 @@ fun AppSelectionCard(
     viewModel: AnvilViewModel,
     context: Context
 ) {
-    val launcherIcon: Drawable = packageList.getPackageIconByName(appRule.packageName)
+    //val launcherIcon: Drawable = packageList.getPackageIconByName(appRule.packageName)
+    val launcherIcon: Drawable by remember { mutableStateOf(packageList.getPackageIconByName(appRule.packageName)) }
     var showDetails by remember { mutableStateOf(false) }
 
     OutlinedCard(
@@ -1223,7 +1225,7 @@ fun AlertDialogCustom(
             ) {
                 Text("Dismiss", color = primaryLight)
             }
-            Spacer(modifier = Modifier.fillMaxWidth(0.38f))
+            Spacer(modifier = Modifier.fillMaxWidth(0.25f))
 
 
         }

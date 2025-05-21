@@ -39,6 +39,10 @@ fun GeofenceBroadcastReceiver(
                     Log.e(TAG, "onReceive: $errorMessage")
                     return
                 }
+                //val alertString = "Geofence Alert :" +
+                //        " Trigger ${geofencingEvent.triggeringGeofences}" +
+                //        " Transition ${geofencingEvent.geofenceTransition}"
+
                 val alertString = "Geofence Alert :" +
                         " Trigger ${geofencingEvent.triggeringGeofences}" +
                         " Transition ${geofencingEvent.geofenceTransition}"

@@ -32,7 +32,7 @@ class GeofenceManager(context: Context) {
             context,
             CUSTOM_REQUEST_CODE_GEOFENCE,
             Intent(CUSTOM_INTENT_GEOFENCE),
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
         )
     }
 

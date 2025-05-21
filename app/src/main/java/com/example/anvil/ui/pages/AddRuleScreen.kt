@@ -1,6 +1,7 @@
 package com.example.anvil.ui.pages
 
 import android.content.Context
+import android.media.AudioManager
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -120,7 +122,8 @@ fun AddRuleScaffold(navController: NavHostController, viewModel: AnvilViewModel,
 @Composable
 fun AddRuleCard(packageList: AppInfo, innerPadding: PaddingValues = PaddingValues(8.dp), navController: NavHostController, viewModel: AnvilViewModel, context: Context) {
     val rule by viewModel.appRule.collectAsStateWithLifecycle()
-    val appIcon = packageList.getPackageIconByName(rule.packageName)
+    //val appIcon = packageList.getPackageIconByName(rule.packageName)
+    val appIcon by remember { mutableStateOf(packageList.getPackageIconByName(rule.packageName)) }
     var number by remember { mutableIntStateOf(0) }
 
     OutlinedCard(
@@ -327,7 +330,26 @@ fun AddRuleCard(packageList: AppInfo, innerPadding: PaddingValues = PaddingValue
                                                 
                                             )
                                             Row {
-                                                var sliderPosition by remember { mutableFloatStateOf(0f) }
+                                                var sliderPosition by remember { mutableFloatStateOf(number.toFloat()) }
+
+                                                val audioManager =
+                                                    context.getSystemService(AudioManager::class.java)
+                                                //val audioManager = getSystemService(context, AudioManager) as AudioManager
+
+                                                val minVolume by remember {
+                                                    mutableIntStateOf(
+                                                        audioManager.getStreamMinVolume(
+                                                            AudioManager.STREAM_MUSIC
+                                                        )
+                                                    )
+                                                }
+                                                val maxVolume by remember {
+                                                    mutableIntStateOf(
+                                                        audioManager.getStreamMaxVolume(
+                                                            AudioManager.STREAM_MUSIC
+                                                        )
+                                                    )
+                                                }
                                                 Slider(
                                                     value = sliderPosition,
                                                     onValueChange = {
@@ -336,7 +358,7 @@ fun AddRuleCard(packageList: AppInfo, innerPadding: PaddingValues = PaddingValue
                                                         viewModel.updateAppRuleValue(number)
                                                         viewModel.updateAppRuleBool(null)
                                                     },
-                                                    valueRange = 0f..100f,
+                                                    valueRange = minVolume.toFloat()..maxVolume.toFloat(),
                                                     modifier = Modifier.padding(horizontal = 20.dp)
                                                 )
                                             }

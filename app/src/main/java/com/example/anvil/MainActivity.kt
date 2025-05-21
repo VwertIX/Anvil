@@ -3,10 +3,13 @@ package com.example.anvil
 
 import android.Manifest
 import android.content.Context
+import android.content.Context.AUDIO_SERVICE
 import android.location.Location
+import android.media.AudioManager
+import android.media.AudioManager.ADJUST_MUTE
+import android.media.AudioManager.ADJUST_UNMUTE
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -37,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.anvil.data.AppInfo
 import com.example.anvil.data.LocationRule
 import com.example.anvil.data.LocationRuleCondition
+import com.example.anvil.data.LocationRuleType
 import com.example.anvil.data.geofence.GeofenceBroadcastReceiver
 import com.example.anvil.data.geofence.GeofenceManager
 import com.example.anvil.ui.AnvilViewModel
@@ -47,7 +51,7 @@ import com.example.anvil.ui.pages.ReadmeLocationScaffold
 import com.example.anvil.ui.pages.ReadmeScaffold
 import com.example.anvil.ui.pages.SelectAppScaffold
 import com.example.anvil.ui.pages.SelectLocationScaffold
-import com.example.anvil.ui.pages.SelectRuleScaffold
+import com.example.anvil.ui.pages.SelectRuleTypeScaffold
 import com.example.anvil.ui.theme.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER
@@ -55,6 +59,8 @@ import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 
@@ -146,7 +152,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
     val geofenceManager by remember { mutableStateOf(GeofenceManager(context)) }
     val geoFenceList by viewModel.allLocationRules.collectAsStateWithLifecycle()
     var geofenceTransitionEventInfo by remember {mutableStateOf("")}
-    rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
 
 
@@ -187,11 +193,26 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
             }
         }
     }
+    val audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
 
+    val allApps by viewModel.allLocationRules.collectAsStateWithLifecycle()
 
     // Register a local broadcast to receive activity transition updates
     GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->
         geofenceTransitionEventInfo = event
+        Log.d("Geofence", geofenceTransitionEventInfo)
+        val rule = allApps.locationRules.find { "id:" + it.locationName + " transition" in geofenceTransitionEventInfo}
+
+        if (rule != null) {
+
+
+            scope.launch(Dispatchers.IO) {
+                setLocationVolume2(rule, audioManager)
+            }
+
+        }
+
+
     }
 
 
@@ -205,7 +226,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
 
         }
         composable<RuleChoiceScreen> {
-            SelectRuleScaffold(context, navController, viewModel, locationPermissionRequest, fusedLocationClient)
+            SelectRuleTypeScaffold(context, navController, viewModel, locationPermissionRequest, fusedLocationClient)
 
         }
         composable<SelectAppScreen> {
@@ -234,6 +255,63 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
 
 
 
+fun setLocationVolume2(rule: LocationRule, audioManager: AudioManager) {
+
+
+    when (rule.ruleCondition) {
+        LocationRuleCondition.Enter.ordinal -> {
+            when (rule.ruleType) {
+                LocationRuleType.MuteUnmute.ordinal -> {
+                    when (rule.ruleBool) {
+                        true -> {
+                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, ADJUST_MUTE, AudioManager.FLAG_SHOW_UI)
+                            Log.d("RunningAppsService", "Mute on open")
+                        }
+
+                        false -> {
+                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI)
+                            Log.d("RunningAppsService", "Unmute on open")
+                        }
+
+                        else -> {}
+                    }
+                }
+
+                LocationRuleType.Volume.ordinal -> {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, rule.ruleValue!!, AudioManager.FLAG_SHOW_UI)
+                    Log.d("RunningAppsService", "Set volume to " + rule.ruleValue + " on open")
+                }
+            }
+
+        }
+        LocationRuleCondition.Leave.ordinal -> {
+            when (rule.ruleType) {
+                LocationRuleType.MuteUnmute.ordinal -> {
+                    when (rule.ruleBool) {
+                        true -> {
+                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, ADJUST_MUTE, AudioManager.FLAG_SHOW_UI)
+                            Log.d("RunningAppsService", "Mute on close")
+                        }
+
+                        false -> {
+                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI)
+                            Log.d("RunningAppsService", "Unmute on close")
+                        }
+
+                        else -> {}
+                    }
+                }
+
+                LocationRuleType.Volume.ordinal -> {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, rule.ruleValue!!, AudioManager.FLAG_SHOW_UI)
+                    Log.d("RunningAppsService", "Set volume to " + rule.ruleValue + " on close")
+                }
+            }
+        }
+    }
+}
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -241,7 +319,7 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
 fun ExposedDropdownMenuAppRule(options: Array<String>, viewModel: AnvilViewModel, context: Context, ordinal: Int) {
     var expanded by remember { mutableStateOf(false) }
     var choice by remember { mutableStateOf(options[ordinal]) }
-    viewModel.checkAppRuleInput(options[ordinal], context)
+    //viewModel.checkAppRuleInput(options[ordinal], context)
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },

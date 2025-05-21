@@ -16,6 +16,7 @@ import com.example.anvil.data.AppRuleList
 import com.example.anvil.data.LocationRule
 import com.example.anvil.data.LocationRuleCondition
 import com.example.anvil.data.LocationRuleList
+import com.example.anvil.data.LocationRuleType
 import com.example.anvil.data.RuleCondition
 import com.example.anvil.data.RuleType
 import com.example.anvil.data.RulesRepository
@@ -47,8 +48,18 @@ class AnvilViewModel @Inject constructor(private val ruleRepository: RulesReposi
 
     fun saveAppRule(appRule: AppRule) {
         viewModelScope.launch {
-            ruleRepository.insertAppRule(appRule)
+
+            if (appRule.ruleType == RuleType.MuteUnmute.ordinal && appRule.ruleBool == null) {
+                ruleRepository.insertAppRule(appRule.copy(ruleBool = true))
+            } else if (appRule.ruleType == RuleType.Volume.ordinal && appRule.ruleValue == null) {
+                ruleRepository.insertAppRule(appRule.copy(ruleValue = 1))
+            } else {
+                ruleRepository.insertAppRule(appRule)
+            }
+
         }
+
+
     }
     fun deleteAppRule(appRule: AppRule) {
         viewModelScope.launch {
@@ -194,7 +205,16 @@ class AnvilViewModel @Inject constructor(private val ruleRepository: RulesReposi
 
     fun saveLocationRule(locationRule: LocationRule) {
         viewModelScope.launch {
-            ruleRepository.insertLocationRule(locationRule)
+            if (locationRule.ruleType == LocationRuleType.MuteUnmute.ordinal && locationRule.ruleBool == null) {
+                ruleRepository.insertLocationRule(locationRule.copy(ruleBool = true))
+            } else if (locationRule.ruleType == LocationRuleType.Volume.ordinal && locationRule.ruleValue == null) {
+
+                ruleRepository.insertLocationRule(locationRule.copy(ruleValue = 1))
+            } else {
+                ruleRepository.insertLocationRule(locationRule)
+            }
+
+            //ruleRepository.insertLocationRule(locationRule)
         }
     }
     fun deleteLocationRule(locationRule: LocationRule) {

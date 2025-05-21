@@ -91,25 +91,16 @@ class AnvilAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-
-        if (event?.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED && ::ruleRepository.isInitialized == true) {
-
-            Log.d("RunningAppsService", "TYPE_WINDOWS_CHANGED")
-
-        }
-
-
         if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && ::ruleRepository.isInitialized == true) {
-
-
-            var runningPackageName = event.packageName.toString()
+            var runningPackageName: String = event.packageName.toString()
 
             event.contentChangeTypes
             Log.d("RunningAppsService", "App name: $runningPackageName")
             Log.d("RunningAppsService", "Is fullScreen: " + event.isFullScreen)
 
-            this
             val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+
+
 
             for (appRule: AppRule in appRuleList.value.appRules) {
                 when (appRule.ruleCondition) {
@@ -122,17 +113,13 @@ class AnvilAccessibilityService : AccessibilityService() {
                                             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, ADJUST_MUTE, AudioManager.FLAG_SHOW_UI)
                                             Log.d("RunningAppsService", "Mute on open")
                                         }
-
                                         false -> {
                                             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, ADJUST_UNMUTE, AudioManager.FLAG_SHOW_UI)
                                             Log.d("RunningAppsService", "Unmute on open")
                                         }
-
                                         else -> {}
                                     }
-
                                 }
-
                                 RuleType.Volume.ordinal -> {
                                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, appRule.ruleValue!!, AudioManager.FLAG_SHOW_UI)
                                     Log.d("RunningAppsService", "Set volume to " + appRule.ruleValue + " on open")
@@ -140,7 +127,6 @@ class AnvilAccessibilityService : AccessibilityService() {
                             }
                         }
                     }
-
                     RuleCondition.Close.ordinal -> {
                         if (runningPackageName != appRule.packageName && previousWindow == appRule.packageName && event.isFullScreen == true) {
                             when (appRule.ruleType) {

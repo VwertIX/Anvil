@@ -37,6 +37,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -170,8 +172,8 @@ fun AppList(packageList: AppInfo, innerPadding: PaddingValues = PaddingValues(8.
 fun AppSelectionCard(packageInfo: PackageInfo, packageList: AppInfo, navController: NavHostController, viewModel: AnvilViewModel) {
     val appName: String = packageList.getAppName(packageInfo)
     val packageName: String = packageList.getPackageName(packageInfo)
-    val launcherIcon: Drawable = packageList.getPackageIcon(packageInfo)
-
+    //val launcherIcon: Drawable = packageList.getPackageIcon(packageInfo)
+    val launcherIcon: Drawable by remember { mutableStateOf(packageList.getPackageIcon(packageInfo)) }
 
     OutlinedCard(
         colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
