@@ -69,6 +69,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.anvil.R
@@ -120,7 +121,7 @@ fun HomepageScaffold(
                                 Spacer(Modifier.weight(1f))
 
                                 IconButton(
-                                    onClick = { navController.navigate(ReadmeScreen) },
+                                    onClick =  dropUnlessResumed { navController.navigate(ReadmeScreen) },
                                     modifier = Modifier
                                         .size(50.dp)
                                 ) {
@@ -133,7 +134,7 @@ fun HomepageScaffold(
 
 
                                 IconButton(
-                                    onClick = { check = true },
+                                    onClick = dropUnlessResumed { check = true },
                                     modifier = Modifier
                                         .size(50.dp)
                                 ) {
@@ -149,7 +150,7 @@ fun HomepageScaffold(
                             true -> {
                                 Spacer(Modifier.weight(1f))
                                 IconButton(
-                                    onClick = { confirm = true },
+                                    onClick = dropUnlessResumed { confirm = true },
                                     modifier = Modifier
                                         .size(50.dp)
                                 ) {
@@ -205,7 +206,7 @@ fun HomepageScaffold(
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
                 contentColor = primaryLight,
-                onClick = {
+                onClick = dropUnlessResumed {
                     navController.navigate(RuleChoiceScreen)
                 }
             ) {
@@ -308,7 +309,7 @@ fun LocationSelectionCard(
             modifier = Modifier
                 .padding(vertical = 6.dp, horizontal = 6.dp)
                 .fillMaxWidth(),
-            onClick = {
+            onClick =  dropUnlessResumed {
                 showDetails = !showDetails
                 // navController.navigate(AddRuleScreen)
             }
@@ -679,7 +680,7 @@ fun LocationSelectionCard(
 
 
                                     IconButton(
-                                        onClick = { check = true },
+                                        onClick = dropUnlessResumed { check = true },
                                         modifier = Modifier
                                             .size(80.dp)
                                     ) {
@@ -694,7 +695,7 @@ fun LocationSelectionCard(
                                 true -> {
 
                                     IconButton(
-                                        onClick = { confirm = true },
+                                        onClick = dropUnlessResumed { confirm = true },
                                         modifier = Modifier
                                             .size(80.dp)
                                     ) {
@@ -763,7 +764,7 @@ fun AppSelectionCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp, horizontal = 6.dp),
-        onClick = {
+        onClick =  dropUnlessResumed  {
             showDetails = !showDetails
             // navController.navigate(AddRuleScreen)
         }
@@ -1124,7 +1125,7 @@ fun AppSelectionCard(
 
 
                                 IconButton(
-                                    onClick = { check = true },
+                                    onClick =  dropUnlessResumed { check = true },
                                     modifier = Modifier
                                         .size(80.dp)
                                 ) {
@@ -1139,7 +1140,7 @@ fun AppSelectionCard(
                             true -> {
 
                                 IconButton(
-                                    onClick = { confirm = true },
+                                    onClick =  dropUnlessResumed { confirm = true },
                                     modifier = Modifier
                                         .size(80.dp)
                                 ) {
@@ -1205,7 +1206,7 @@ fun AlertDialogCustom(
         confirmButton = {
 
             TextButton(
-                onClick = {
+                onClick =  dropUnlessResumed {
                     onConfirmation()
                 }
             ) {
@@ -1216,7 +1217,7 @@ fun AlertDialogCustom(
 
             TextButton(
 
-                onClick = {
+                onClick = dropUnlessResumed {
                     onDismissRequest()
                 }
             ) {
@@ -1269,7 +1270,7 @@ fun ExposedDropdownMenuLocationRule(
             options.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
-                    onClick = {
+                    onClick = dropUnlessResumed {
                         choice = option
                         when (choice) {
                             context.getString(R.string.mute_unmute) -> viewModel.updateLocationRule(
@@ -1363,7 +1364,7 @@ fun ExposedDropdownMenuAppRule(
             options.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
-                    onClick = {
+                    onClick = dropUnlessResumed {
                         choice = option
                         when (choice) {
                             context.getString(R.string.mute_unmute) -> viewModel.updateAppRule(

@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import com.example.anvil.AddRuleScreen
 import com.example.anvil.R
@@ -177,7 +178,7 @@ fun AppSelectionCard(packageInfo: PackageInfo, packageList: AppInfo, navControll
         border = BorderStroke(4.dp, MaterialTheme.colorScheme.primaryContainer),
         modifier = Modifier
             .padding(vertical = 6.dp, horizontal = 6.dp),
-        onClick = {
+        onClick = dropUnlessResumed {
             viewModel.updateAppRuleAppName(appName)
             viewModel.updateAppRulePackageName(packageName)
             navController.navigate(AddRuleScreen)

@@ -95,6 +95,20 @@ class AnvilViewModel @Inject constructor(private val ruleRepository: RulesReposi
     var installedPackages: List<PackageInfo> = emptyList()
 
 
+    private val _coord1 = MutableStateFlow(LatLng(0.0, 0.0))
+    val coord1: StateFlow<LatLng> = _coord1
+
+    fun updateCoord1(latitude: Double, longitude: Double) {
+        _coord1.value = LatLng(latitude, longitude)
+    }
+
+    private val _coord2 = MutableStateFlow(LatLng(0.0, 0.0))
+    val coord2: StateFlow<LatLng> = _coord2
+
+
+    fun updateCoord2(latitude: Double, longitude: Double) {
+        _coord2.value = LatLng(latitude, longitude)
+    }
 
 
     private val _appRule = MutableStateFlow(AppRule())

@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import com.example.anvil.ExposedDropdownMenuAppRule
 import com.example.anvil.HomeScreen
@@ -96,7 +97,7 @@ fun AddRuleScaffold(navController: NavHostController, viewModel: AnvilViewModel,
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
                 contentColor = primaryLight,
-                onClick = {
+                onClick = dropUnlessResumed {
                     viewModel.saveAppRule(rule)
                     navController.popBackStack(route = HomeScreen, inclusive = false)
                 }

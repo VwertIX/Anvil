@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.dropUnlessResumed
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -77,7 +78,7 @@ private fun GeofencingControls() {
     ) {
         GeofenceList(geofenceManager)
         Button(
-            onClick = {
+            onClick = dropUnlessResumed {
                 if (geofenceManager.geofenceList.isNotEmpty()) {
                     geofenceManager.registerGeofence()
                 } else {
@@ -93,7 +94,7 @@ private fun GeofencingControls() {
         }
 
         Button(
-            onClick = {
+            onClick = dropUnlessResumed {
                 scope.launch(Dispatchers.IO) {
                     geofenceManager.deregisterGeofence()
                 }
@@ -231,7 +232,7 @@ private fun GeofencingControls2() {
     ) {
         GeofenceList(geofenceManager)
         Button(
-            onClick = {
+            onClick = dropUnlessResumed {
                 if (geofenceManager.geofenceList.isNotEmpty()) {
                     geofenceManager.registerGeofence()
                 } else {
@@ -247,7 +248,7 @@ private fun GeofencingControls2() {
         }
 
         Button(
-            onClick = {
+            onClick = dropUnlessResumed {
                 scope.launch(Dispatchers.IO) {
                     geofenceManager.deregisterGeofence()
                 }

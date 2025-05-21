@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import com.example.anvil.R
 import com.example.anvil.ReadmeLocationScreen
@@ -56,7 +57,7 @@ fun SelectLocationScaffold(context: Context, navController: NavHostController, v
                                 Spacer(Modifier.weight(1f))
 
                                 IconButton(
-                                    onClick = {
+                                    onClick = dropUnlessResumed {
                                         navController.navigate(ReadmeLocationScreen) },
                                     modifier = Modifier
                                         .size(50.dp)

@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import com.example.anvil.R
 import com.example.anvil.SelectAppScreen
@@ -89,7 +90,7 @@ fun SelectRuleScaffold(context: Context, navController: NavHostController, viewM
                     modifier = Modifier
                         .height(250.dp)
                         .padding(vertical = 6.dp, horizontal = 10.dp),
-                    onClick = {
+                    onClick = dropUnlessResumed {
                         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                             viewModel.fetchUserLocation(context, fusedLocationClient)
                             navController.navigate(SelectLocationScreen)
@@ -135,7 +136,7 @@ fun SelectRuleScaffold(context: Context, navController: NavHostController, viewM
                     modifier = Modifier
                         .height(250.dp)
                         .padding(vertical = 6.dp, horizontal = 10.dp),
-                    onClick = {
+                    onClick = dropUnlessResumed {
 
                         navController.navigate(SelectAppScreen)
                     }

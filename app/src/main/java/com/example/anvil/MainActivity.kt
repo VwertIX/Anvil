@@ -29,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -148,52 +149,44 @@ fun AnvilNav(context: Context, locationPermissionRequest: ActivityResultLauncher
     rememberCoroutineScope()
 
 
-    for (geofence: LocationRule in geoFenceList.locationRules) {
-        if (geofence.ruleCondition == LocationRuleCondition.Enter.ordinal) {
 
-            geofenceManager.addGeofence(
-                id = geofence.locationName,
-                location = Location("").apply {
-                    latitude = geofence.latitude
-                    longitude = geofence.longitude
-                },
-                radius = geofence.radius,
-                transitionType = GEOFENCE_TRANSITION_ENTER
-            )
-            if (geofenceManager.geofenceList.isNotEmpty()) {
-                geofenceManager.registerGeofence()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Please add at least one geofence to monitor",
-                    Toast.LENGTH_SHORT,
-                ).show()
-            }
-            Log.d("Geofence", "Geofence added")
-        } else if (geofence.ruleCondition == LocationRuleCondition.Leave.ordinal) {
+    if (geofenceManager.geofenceList.count() < geoFenceList.locationRules.count()) {
+        for (geofence: LocationRule in geoFenceList.locationRules) {
+            if (geofenceManager.geofenceList.contains(geofence.locationName) == false) {
+                when (geofence.ruleCondition) {
+                    LocationRuleCondition.Enter.ordinal -> {
 
-            geofenceManager.addGeofence(
-                id = geofence.locationName,
-                location = Location("").apply {
-                    latitude = geofence.latitude
-                    longitude = geofence.longitude
-                },
-                radius = geofence.radius,
-                transitionType = GEOFENCE_TRANSITION_EXIT
-            )
-            if (geofenceManager.geofenceList.isNotEmpty()) {
-                geofenceManager.registerGeofence()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Please add at least one geofence to monitor",
-                    Toast.LENGTH_SHORT,
-                ).show()
+                        geofenceManager.addGeofence(
+                            id = geofence.locationName,
+                            location = Location("").apply {
+                                latitude = geofence.latitude
+                                longitude = geofence.longitude
+                            },
+                            radius = geofence.radius,
+                            transitionType = GEOFENCE_TRANSITION_ENTER
+                        )
+                        geofenceManager.registerGeofence()
+
+                        Log.d("Geofence", "Geofence added")
+                    }
+
+                    LocationRuleCondition.Leave.ordinal -> {
+
+                        geofenceManager.addGeofence(
+                            id = geofence.locationName,
+                            location = Location("").apply {
+                                latitude = geofence.latitude
+                                longitude = geofence.longitude
+                            },
+                            radius = geofence.radius,
+                            transitionType = GEOFENCE_TRANSITION_EXIT
+                        )
+                        geofenceManager.registerGeofence()
+                    }
+                }
             }
         }
     }
-
-
 
 
     // Register a local broadcast to receive activity transition updates
@@ -276,7 +269,7 @@ fun ExposedDropdownMenuAppRule(options: Array<String>, viewModel: AnvilViewModel
             options.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
-                    onClick = {
+                    onClick = dropUnlessResumed {
                         choice = option
                         viewModel.checkAppRuleInput(option, context)
                         expanded = false

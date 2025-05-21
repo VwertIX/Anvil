@@ -56,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavHostController
 import com.example.anvil.HomeScreen
 import com.example.anvil.R
@@ -101,52 +102,38 @@ fun ConfigureLocationRuleScaffold(navController: NavHostController, viewModel: A
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
                 contentColor = primaryLight,
-                onClick = {
+                onClick = dropUnlessResumed {
                     viewModel.saveLocationRule(rule)
-                    if (rule.ruleCondition == LocationRuleCondition.Enter.ordinal) {
-
-                        geofenceManager.addGeofence(
-                            id = rule.locationName,
-                            location = Location("").apply {
-                                latitude = rule.latitude
-                                longitude = rule.longitude
-                            },
-                            radius = rule.radius,
-                            transitionType = GEOFENCE_TRANSITION_ENTER
-                        )
-                        if (geofenceManager.geofenceList.isNotEmpty()) {
+                    when (rule.ruleCondition) {
+                        LocationRuleCondition.Enter.ordinal -> {
+                            geofenceManager.addGeofence(
+                                id = rule.locationName,
+                                location = Location("").apply {
+                                    latitude = rule.latitude
+                                    longitude = rule.longitude
+                                },
+                                radius = rule.radius,
+                                transitionType = GEOFENCE_TRANSITION_ENTER
+                            )
                             geofenceManager.registerGeofence()
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "Please add at least one geofence to monitor",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            Log.d("Geofence", "Geofence added 1")
                         }
-                        Log.d("Geofence", "Geofence added")
-                    } else if (rule.ruleCondition == LocationRuleCondition.Leave.ordinal) {
+                        LocationRuleCondition.Leave.ordinal -> {
 
-                        geofenceManager.addGeofence(
-                            id = rule.locationName,
-                            location = Location("").apply {
-                                latitude = rule.latitude
-                                longitude = rule.longitude
-                            },
-                            radius = rule.radius,
-                            transitionType = GEOFENCE_TRANSITION_EXIT
-                        )
-                        if (geofenceManager.geofenceList.isNotEmpty()) {
+                            geofenceManager.addGeofence(
+                                id = rule.locationName,
+                                location = Location("").apply {
+                                    latitude = rule.latitude
+                                    longitude = rule.longitude
+                                },
+                                radius = rule.radius,
+                                transitionType = GEOFENCE_TRANSITION_EXIT
+                            )
                             geofenceManager.registerGeofence()
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "Please add at least one geofence to monitor",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            Log.d("Geofence", "Geofence added")
+
+
                         }
-                        Log.d("Geofence", "Geofence added")
-
-
                     }
 
                     navController.popBackStack(route = HomeScreen, inclusive = false)
@@ -399,7 +386,7 @@ fun ExposedDropdownMenuLocationRule(options: Array<String>, viewModel: AnvilView
             options.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option, style = MaterialTheme.typography.bodyLarge) },
-                    onClick = {
+                    onClick = dropUnlessResumed {
                         choice = option
                         viewModel.checkLocationRuleInput(option, context)
                         expanded = false
