@@ -77,12 +77,13 @@ class GeofenceManager(context: Context) {
         location: Location,
         radiusInMeters: Float,
         expirationTimeInMillis: Long,
+        transitionType: Int = GEOFENCE_TRANSITION_ENTER or GEOFENCE_TRANSITION_EXIT
     ): Geofence {
         return Geofence.Builder()
             .setRequestId(key)
             .setCircularRegion(location.latitude, location.longitude, radiusInMeters)
             .setExpirationDuration(expirationTimeInMillis)
-            .setTransitionTypes(GEOFENCE_TRANSITION_ENTER or GEOFENCE_TRANSITION_EXIT)
+            .setTransitionTypes(transitionType)
             .build()
     }
 

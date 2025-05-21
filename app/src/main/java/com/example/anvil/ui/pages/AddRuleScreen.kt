@@ -122,8 +122,8 @@ fun AddRuleScaffold(navController: NavHostController, viewModel: AnvilViewModel,
 @Composable
 fun AddRuleCard(packageList: AppInfo, innerPadding: PaddingValues = PaddingValues(8.dp), navController: NavHostController, viewModel: AnvilViewModel, context: Context) {
     val rule by viewModel.appRule.collectAsStateWithLifecycle()
-    //val appIcon = packageList.getPackageIconByName(rule.packageName)
-    val appIcon by remember { mutableStateOf(packageList.getPackageIconByName(rule.packageName)) }
+    val appIcon = packageList.getPackageIconByName(rule.packageName)
+    //val appIcon by remember { mutableStateOf(packageList.getPackageIconByName(rule.packageName)) }
     var number by remember { mutableIntStateOf(0) }
 
     OutlinedCard(

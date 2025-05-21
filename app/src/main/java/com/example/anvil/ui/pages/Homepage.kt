@@ -756,8 +756,8 @@ fun AppSelectionCard(
     viewModel: AnvilViewModel,
     context: Context
 ) {
-    //val launcherIcon: Drawable = packageList.getPackageIconByName(appRule.packageName)
-    val launcherIcon: Drawable by remember { mutableStateOf(packageList.getPackageIconByName(appRule.packageName)) }
+    val launcherIcon: Drawable = packageList.getPackageIconByName(appRule.packageName)
+    //val launcherIcon: Drawable by remember { mutableStateOf(packageList.getPackageIconByName(appRule.packageName)) }
     var showDetails by remember { mutableStateOf(false) }
 
     OutlinedCard(

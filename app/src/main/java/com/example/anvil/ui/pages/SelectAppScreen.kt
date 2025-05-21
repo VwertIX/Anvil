@@ -172,8 +172,8 @@ fun AppList(packageList: AppInfo, innerPadding: PaddingValues = PaddingValues(8.
 fun AppSelectionCard(packageInfo: PackageInfo, packageList: AppInfo, navController: NavHostController, viewModel: AnvilViewModel) {
     val appName: String = packageList.getAppName(packageInfo)
     val packageName: String = packageList.getPackageName(packageInfo)
-    //val launcherIcon: Drawable = packageList.getPackageIcon(packageInfo)
-    val launcherIcon: Drawable by remember { mutableStateOf(packageList.getPackageIcon(packageInfo)) }
+    val launcherIcon: Drawable = packageList.getPackageIcon(packageInfo)
+
 
     OutlinedCard(
         colors = CardDefaults.cardColors( containerColor = MaterialTheme.colorScheme.onPrimary ),
